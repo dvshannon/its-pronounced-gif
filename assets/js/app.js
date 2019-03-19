@@ -1,10 +1,17 @@
 var topics = ['shiba', 'touchdown', 'rocket league', 'frisbee'];
 
-function previewGif() {
+// apparently these next three lines a big deal...
+var xhr = $.get("https://api.giphy.com/v1/gifs/search?q="+ giphy.gif + "&api_key=X26Ado6ysWrCxS9wmW74PrXH4VrtZusv&limit=10");
+xhr.done(function(data) { console.log("success got data", data); 
+
+});
+
+
+function giphy() {
     $('#gif-dumpster').empty();
 
     console.log(this, 'this')
-    var gif = $(this).attr('data-gif');
+    var gif = $(this).attr('data-state');
     var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ gif + "&api_key=X26Ado6ysWrCxS9wmW74PrXH4VrtZusv&limit=10";
 
 // calls api and gets results
@@ -15,10 +22,10 @@ function previewGif() {
           
           .then(function(response) {
             // stores data in variable
-            var results = response.data;
+            var results = xhr.response.data;
 
             // new div for gif
-            var gifDiv = $('<div>');
+            var gifDiv = $('<div class="the-gif-class">');
 
 
             // loops every result
@@ -29,7 +36,7 @@ function previewGif() {
               var p = $("<p>").text("Rating: " + rating);
 
             //   source of url still
-              var imageUrl = results[i].images.fixed_width_still.url;
+              var imageUrl = results[i].images.fixed_width.url;
 
               // Creating an image tag for gif & gives the attribute of still to gifImage
               var topicImage = $("<img>".attr("src", imageURL));
@@ -60,7 +67,7 @@ function renderButtons() {
 
 
 
-// 
+// enters gif input and value into array of topics
 $('#add-gif').on('click', function(event) {
     // prevents autoload
     event.preventDefault();
@@ -73,8 +80,31 @@ $('#add-gif').on('click', function(event) {
     renderButtons();
 });
 
-$(document).on('click', '.gifs', previewGif);
+$(document).on('click', '.gifs', giphy);
 
+// switches gif state from still to running
+$(".gif").on("click", function() {
+  var state = $(this).attr("data-state");
+  
+  if (state === "still") {
+
+    var imageIClickedOn = $(this);
+    // Get the value of the data-animate attribute on the img I clicked on
+    var animatedURL = imageIClickedOn.attr("data-animate");
+
+    // Set the src attribute on the img I clicked on
+    imageIClickedOn.attr("src", animatedURL);
+
+    $(this).attr("src", $(this).attr("data-animate"));
+    $(this).attr("data-state", "animate");
+  } 
+  
+  else {
+    $(this).attr("src", $(this).attr("data-still"));
+    $(this).attr("data-state", "still");
+  }
+
+});
 
 
 
