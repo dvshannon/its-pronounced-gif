@@ -1,0 +1,29 @@
+body {
+    background: #36393F;
+    color: #FFFFFF;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+    margin: 0 auto;
+}
+
+#input-gif {
+    background-color: #484B52;
+    color: #FFF;
+    font-size: 1.2rem;
+}
+#add-gif {
+    background-color: #00AF1F;
+    color: #FFFFFF;
+    margin: 5px;
+    border-radius: 14%;
+    font-size: 1.2rem;
+
+}
+
+.gifs {
+    background-image: linear-gradient(to bottom right, red, yellow);
+    color: #FFFFFF;
+    font-size: 1.5rem;
+    margin: 5px;
+    border-radius: 14%;
+}

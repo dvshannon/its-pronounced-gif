@@ -5,7 +5,7 @@ function giphy() {
     $('#gif-dumpster').empty();
 
     console.log(this, 'this');
-
+    var topics = $(this).attr("data-gif");
     var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ topics + "&api_key=X26Ado6ysWrCxS9wmW74PrXH4VrtZusv&limit=10";
 
 // calls api and gets results
@@ -28,11 +28,12 @@ function giphy() {
               var rating = results.rating;
 
               // creates p tag for easier wording with rating for gif
-              var p = $("<p>").text("Rating: " + rating);
+            //   var p = $("<p>").text("Rating: " + rating);
 
               // Creating an image tag for gif & gives the attribute of still to gifImage
               var topicImage = $("<img>").attr("src", results[i].images.fixed_width.url);
               topicImage.attr('data-state', 'still');
+            //   topicImage.attr('title', "Rating: "+ topicImage[i].rating);
               topicImage.addClass('gifs');
               $("#gif-dumpster").prepend(topicImage);
 
@@ -55,6 +56,7 @@ function renderButtons() {
             
                 newButton.addClass('gifs');
                 newButton.attr('data-gif', topics[i]);
+                
     }
 }
 
