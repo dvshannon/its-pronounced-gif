@@ -1,17 +1,17 @@
 var topics = ['shiba', 'touchdown', 'rocket league', 'frisbee'];
 
 // apparently these next three lines a big deal...
-var xhr = $.get("https://api.giphy.com/v1/gifs/search?q="+ giphy.gif + "&api_key=X26Ado6ysWrCxS9wmW74PrXH4VrtZusv&limit=10");
-xhr.done(function(data) { console.log("success got data", data); 
+// var xhr = $.get("https://api.giphy.com/v1/gifs/search?q="+ giphy.gif + "&api_key=X26Ado6ysWrCxS9wmW74PrXH4VrtZusv&limit=10");
+// xhr.done(function(data) { console.log("success got data", data); 
 
-});
+// });
 
 
 function giphy() {
     $('#gif-dumpster').empty();
 
     console.log(this, 'this')
-    var gif = $(this).attr('data-state');
+    var gif = $(this).attr('data-gif');
     var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ gif + "&api_key=X26Ado6ysWrCxS9wmW74PrXH4VrtZusv&limit=10";
 
 // calls api and gets results
@@ -22,16 +22,16 @@ function giphy() {
           
           .then(function(response) {
             // stores data in variable
-            var results = xhr.response.data;
+            var results = response.data;
 
             // new div for gif
-            var gifDiv = $('<div class="the-gif-class">');
+            var gifDiv = $('<div class="gifs">');
 
 
             // loops every result
             for (var i = 0; i < results.length; i++){
               // stores gif rating
-              var rating = results.data[i].rating;
+              var rating = results[i].data.rating;
               // creates p tag for easier wording with rating for gif
               var p = $("<p>").text("Rating: " + rating);
 
@@ -40,6 +40,7 @@ function giphy() {
 
               // Creating an image tag for gif & gives the attribute of still to gifImage
               var topicImage = $("<img>".attr("src", imageURL));
+              topicImage.attr('data-state', 'still');
               
               gifDiv.prepend(topicImage);
 
@@ -83,7 +84,7 @@ $('#add-gif').on('click', function(event) {
 $(document).on('click', '.gifs', giphy);
 
 // switches gif state from still to running
-$(".gif").on("click", function() {
+$(".gifs").on("click", function() {
   var state = $(this).attr("data-state");
   
   if (state === "still") {
