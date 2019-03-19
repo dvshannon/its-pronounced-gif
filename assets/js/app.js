@@ -1,18 +1,12 @@
 var topics = ['shiba', 'touchdown', 'rocket league', 'frisbee'];
 
-// apparently these next three lines a big deal...
-// var xhr = $.get("https://api.giphy.com/v1/gifs/search?q="+ giphy.gif + "&api_key=X26Ado6ysWrCxS9wmW74PrXH4VrtZusv&limit=10");
-// xhr.done(function(data) { console.log("success got data", data); 
-
-// });
-
 
 function giphy() {
     $('#gif-dumpster').empty();
 
-    console.log(this, 'this')
-    var gif = $(this).attr('data-gif');
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ gif + "&api_key=X26Ado6ysWrCxS9wmW74PrXH4VrtZusv&limit=10";
+    console.log(this, 'this');
+
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q="+ topics + "&api_key=X26Ado6ysWrCxS9wmW74PrXH4VrtZusv&limit=10";
 
 // calls api and gets results
     $.ajax({
@@ -21,34 +15,32 @@ function giphy() {
           })
           
           .then(function(response) {
+
+            console.log(response);
+
             // stores data in variable
             var results = response.data;
 
-            // new div for gif
-            var gifDiv = $('<div class="gifs">');
-
-
             // loops every result
             for (var i = 0; i < results.length; i++){
+                
               // stores gif rating
-              var rating = results[i].data.rating;
+              var rating = results.rating;
+
               // creates p tag for easier wording with rating for gif
               var p = $("<p>").text("Rating: " + rating);
 
-            //   source of url still
-              var imageUrl = results[i].images.fixed_width.url;
-
               // Creating an image tag for gif & gives the attribute of still to gifImage
-              var topicImage = $("<img>".attr("src", imageURL));
+              var topicImage = $("<img>").attr("src", results[i].images.fixed_width.url);
               topicImage.attr('data-state', 'still');
-              
-              gifDiv.prepend(topicImage);
+              topicImage.addClass('gifs');
+              $("#gif-dumpster").prepend(topicImage);
 
               // gifs will appear on top of each other as they are loaded in #gif-dumpster
               // Appends the p and topicImage to gifDiv
-              $("#gif-dumpster").prepend(gifDiv);
-              gifDiv.prepend(p);
-            console.log(results.data);
+            //   $("#gif-dumpster").prepend(gifDiv);
+            // gifDiv.prepend(p);
+
           }
         });
 };
@@ -74,7 +66,8 @@ $('#add-gif').on('click', function(event) {
     event.preventDefault();
 
     var gifInput = $('#input-gif').val().trim();
-
+    topics.attr('data-state', 'still');
+    topics.addClass('gifs');
     // adds input gif to array of topics
     topics.push(gifInput);
 
@@ -82,6 +75,9 @@ $('#add-gif').on('click', function(event) {
 });
 
 $(document).on('click', '.gifs', giphy);
+
+
+
 
 // switches gif state from still to running
 $(".gifs").on("click", function() {
